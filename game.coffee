@@ -211,7 +211,7 @@ class Game extends GameEngine
     # Where would the player be next?
     old_y = parseInt(@player.position.Y)
     @player.update_position(dt)
-    new_y = parseInt(@player.position.Y)
+    new_y = Math.min parseInt(@player.position.Y), @tilemap.length-1
 
     @move_camera "right"
     # Fall onto platform from the top

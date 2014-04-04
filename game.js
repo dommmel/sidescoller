@@ -258,7 +258,7 @@ Game = (function(_super) {
     }
     old_y = parseInt(this.player.position.Y);
     this.player.update_position(dt);
-    new_y = parseInt(this.player.position.Y);
+    new_y = Math.min(parseInt(this.player.position.Y), this.tilemap.length - 1);
     this.move_camera("right");
     if (new_y > old_y) {
       for (y = _i = new_y; new_y <= old_y ? _i <= old_y : _i >= old_y; y = new_y <= old_y ? ++_i : --_i) {
