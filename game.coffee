@@ -208,29 +208,29 @@ class Game extends GameEngine
     if @input.is_released 'jump'
       @player.end_jump()
 
-    # Where would the player be next?
-    old_y = parseInt(@player.position.Y)
-    @player.update_position(dt)
-    new_y = Math.min parseInt(@player.position.Y), @tilemap.length-1
+    old_y = parseInt(@player.position.Y)                              # current player position
+    @player.update_position(dt)                                       # calculate new player position
+    new_y = Math.min parseInt(@player.position.Y), @tilemap.length-1  # ensure new player position is within the level bounds
 
     @move_camera "right"
-    # Fall onto platform from the top
-    if new_y > old_y # only when falling
-      for y in [new_y..old_y] 
-        if @tilemap[y][@player.position.X] != " "
-          @player.is_on_ground = true
-          @player.position.Y = parseInt(y)-1
 
-    # Fall off platform when they end        
-    if new_y == old_y and @player.is_on_ground
-      if @tilemap[old_y+1][@player.position.X] == " "
-        @player.is_on_ground = false
+    # Fall onto platforms from the top
+    if new_y > old_y                                # if the player is falling down (not jumping up)
+      for y in [new_y..old_y]                       # check all tiles between new and old postition (vertically)
+        if @tilemap[y][@player.position.X] != " "   # if one of them is solid, put the player ontop
+          @player.is_on_ground = true
+          @player.position.Y = y-1
+
+    # Fall off platforms when they end        
+    if new_y == old_y and @player.is_on_ground          # if the player isn't jump or falling
+      if @tilemap[old_y+1][@player.position.X] == " "   # if the tile below the player isn't solid
+        @player.is_on_ground = false                    # start falling
 
 
   render: ->
-    buffer = @tilemap.map((ar)-> ar.slice()) # clone tilemap
-    buffer[parseInt(@player.position.Y)][@player.position.X] = "@" # inject player
-    @canvas.innerHTML = buffer.map((el) -> el.join("")).join("\n") # throw it on screen
+    buffer = @tilemap.map((ar)-> ar.slice())                        # clone tilemap
+    buffer[parseInt(@player.position.Y)][@player.position.X] = "@"  # inject player
+    @canvas.innerHTML = buffer.map((el) -> el.join("")).join("\n")  # throw it on screen
 
 
 #######################
