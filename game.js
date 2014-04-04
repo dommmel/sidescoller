@@ -256,15 +256,15 @@ Game = (function(_super) {
     if (this.input.is_released('jump')) {
       this.player.end_jump();
     }
-    old_y = parseInt(this.player.position.Y);
+    old_y = Math.round(this.player.position.Y);
     this.player.update_position(dt);
-    new_y = Math.min(parseInt(this.player.position.Y), this.tilemap.length - 1);
+    new_y = Math.min(Math.round(this.player.position.Y), this.tilemap.length - 1);
     this.move_camera("right");
     if (new_y > old_y) {
       for (y = _i = new_y; new_y <= old_y ? _i <= old_y : _i >= old_y; y = new_y <= old_y ? ++_i : --_i) {
         if (this.tilemap[y][this.player.position.X] !== " ") {
           this.player.is_on_ground = true;
-          this.player.position.Y = parseInt(y) - 1;
+          this.player.position.Y = y - 1;
         }
       }
     }
@@ -280,7 +280,7 @@ Game = (function(_super) {
     buffer = this.tilemap.map(function(ar) {
       return ar.slice();
     });
-    buffer[parseInt(this.player.position.Y)][this.player.position.X] = "@";
+    buffer[Math.round(this.player.position.Y)][this.player.position.X] = "@";
     return this.canvas.innerHTML = buffer.map(function(el) {
       return el.join("");
     }).join("\n");

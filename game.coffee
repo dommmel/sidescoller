@@ -208,9 +208,9 @@ class Game extends GameEngine
     if @input.is_released 'jump'
       @player.end_jump()
 
-    old_y = parseInt(@player.position.Y)                              # current player position
+    old_y = Math.round(@player.position.Y)                              # current player position
     @player.update_position(dt)                                       # calculate new player position
-    new_y = Math.min parseInt(@player.position.Y), @tilemap.length-1  # ensure new player position is within the level bounds
+    new_y = Math.min Math.round(@player.position.Y), @tilemap.length-1  # ensure new player position is within the level bounds
 
     @move_camera "right"
 
@@ -229,7 +229,7 @@ class Game extends GameEngine
 
   render: ->
     buffer = @tilemap.map((ar)-> ar.slice())                        # clone tilemap
-    buffer[parseInt(@player.position.Y)][@player.position.X] = "@"  # inject player
+    buffer[Math.round(@player.position.Y)][@player.position.X] = "@"  # inject player
     @canvas.innerHTML = buffer.map((el) -> el.join("")).join("\n")  # throw it on screen
 
 
